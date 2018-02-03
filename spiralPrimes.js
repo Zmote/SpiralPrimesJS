@@ -23,7 +23,13 @@ class Point {
         this.y = y;
     }
 }
-
+/**
+ * @class Options
+ *
+ * @desc A class for determining how to draw the spiral primes
+ *
+ * @param drawDelay Delay in milliseconds
+ * */
 class Options {
     constructor({
                     limit = 1024, rectangleSize = 24,
@@ -31,7 +37,8 @@ class Options {
                     defaultTextColor = "black", defaultFillStyle = "white",
                     primeTextColor = "white", primeFillStyle = "blue",
                     hideNumbers = false,
-                    isAnimated = false
+                    isAnimated = false,
+                    drawDelay = 1,
                 } = {}) {
         this.limit = limit;
         this.rectangleSize = rectangleSize;
@@ -43,6 +50,7 @@ class Options {
         this.primeFillStyle = primeFillStyle;
         this.hideNumbers = hideNumbers;
         this.isAnimated = isAnimated;
+        this.drawDelay = drawDelay;
         this.fontSize = (rectangleSize / 4) * 3;
     }
 }
@@ -218,7 +226,7 @@ class SpiralPrimeGenerator {
             if(this.options.isAnimated){
                 setTimeout(()=>{
                     this.drawRectangle(number, Directions[directions.generateDirection()]);
-                },1);
+                },number * this.options.drawDelay);
             }else{
                 this.drawRectangle(number, Directions[directions.generateDirection()]);
             }
@@ -263,4 +271,9 @@ class SpiralPrimeGenerator {
 // }));
 // spiralPrimes.run();
 
-new SpiralPrimeGenerator().run();
+new SpiralPrimeGenerator({options: new Options(
+        {
+            isAnimated:true,
+            drawDelay:10
+        }
+    )}).run();
